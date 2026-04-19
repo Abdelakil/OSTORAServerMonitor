@@ -10,6 +10,8 @@
 name: Publish Docker Image (GPR)
 
 on:
+  push:
+    branches: [ "main" ]
   release:
     types: [published]
 
