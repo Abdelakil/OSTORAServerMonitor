@@ -5,7 +5,7 @@ from discord.ui import View
 
 from ostora_server_monitor.gamedig import GamedigPlayer
 from ostora_server_monitor.styles.medium import Medium
-from ostora_server_monitor.styles.style import ConnectButton
+from ostora_server_monitor.styles.style import CopyButton
 from ostora_server_monitor.translator import t
 
 
@@ -35,10 +35,10 @@ class Large(Medium):
         return embed
 
     def view(self) -> Optional[View]:
-        """Return a View with connect button"""
+        """Return a View with copy button"""
         view = View()
-        connect_button = ConnectButton(self.server, self.locale)
-        view.add_item(connect_button)
+        copy_button = CopyButton(self.server, self.locale)
+        view.add_item(copy_button)
         return view
 
     def add_player_list_fields(

@@ -39,7 +39,7 @@
     "command.setalert.settings.button.label": "Alert settings",
     "command.setalert.test.button.label": "Send test alert",
     "command.setalert.test.success": "Test alert sent successfully.",
-    "button.connect.label": "Connect",
+    "button.copy.label": "Copy",
     "command.setalert.test.empty": "The Webhook URL cannot be empty.",
     "command.setalert.test.invalid": "The Webhook URL is invalid.",
     "command.setalert.test.not_found": "This webhook was not found.",

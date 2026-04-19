@@ -269,114 +269,25 @@ class Style(ABC):
         return players_string
 
 
-class ConnectButton(Button):
-    """Connect button for game servers"""
+class CopyButton(Button):
+    """Copy button for game server address"""
 
     def __init__(self, server: Server, locale: str):
         self.server = server
         self.locale = locale
-        connect_url = self._get_connect_url()
 
-        label = t("button.connect.label", locale)
-        style = ButtonStyle.primary if connect_url else ButtonStyle.secondary
-        disabled = not connect_url
+        label = t("button.copy.label", locale)
+        style = ButtonStyle.primary
 
-        super().__init__(style=style, label=label, disabled=disabled)
+        super().__init__(style=style, label=label)
 
     async def callback(self, interaction):
-        """Send connection details when button is clicked"""
-        connect_url = self._get_connect_url()
-
+        """Send server address for copying when button is clicked"""
         # Format connect command for console (used by CS2, etc.)
         connect_command = f"connect {self.server.address}:{self.server.query_port}"
-        
-        if connect_url:
-            await interaction.response.send_message(
-                f"🔗 **Connection URL:** `{connect_url}`\n"
-                f"📍 **Connect Command:** `{connect_command}`\n"
-                f"📋 **Server:** `{self.server.address}:{self.server.query_port}`",
-                ephemeral=True
-            )
-        else:
-            await interaction.response.send_message(
-                f"📍 **Connect Command:** `{connect_command}`\n"
-                f"📋 **Server:** `{self.server.address}:{self.server.query_port}`\n"
-                f"⚠️ This game doesn't have a direct connect URL. Copy the connect command and paste it in console.",
-                ephemeral=True
-            )
 
-    def _get_connect_url(self) -> Optional[str]:
-        """Generate game-specific connection URL"""
-        game_id = self.server.game_id
-        address = self.server.address
-        query_port = self.server.query_port
-
-        Logger.debug(f"ConnectButton: game_id={game_id}, address={address}, query_port={query_port}")
-
-        # Discord servers use instant invite
-        if game_id == "discord":
-            url = self.server.result.get("connect")
-            Logger.debug(f"ConnectButton: Discord server, url={url}")
-            return url
-
-        # Steam games (Source, GoldSrc, etc.)
-        steam_games = [
-            "cs", "cs2", "csgo", "css", "dod", "dods", "hl2dm", "tf2", "gmod", "insurgency",
-            "nmrih", "zps", "synergy", "aos", "pvkii", "mumble", "ark", "arkse",
-            "arma3", "battalion1944", "braid", "cod", "cod2", "cod4", "codwaw",
-            "codbo", "codmw2", "codmw3", "coj", "crysis", "crysis2", "crysiswars",
-            "dmc", "dod", "dods", "doi", "fear", "gta5", "gta", "hldm", "hl2dm",
-            "insurgency", "insurgencysandstorm", "jcmp", "jcmp2", "jcmp3", "kf", "killingfloor",
-            "killingfloor2", "left4dead", "left4dead2", "mohaa", "mohab", "mohpa",
-            "mohwf", "mta", "mtasa", "nmrih", "opfdr", "pvkii", "ragemp", "samp",
-            "sf", "sfc", "sfc2", "soldat", "source", "swat4", "synergy", "tes",
-            "tf2", "ts", "ut", "ut2003", "ut2004", "ut3", "ut3_lan", "vampire",
-            "ven", "warsow", "wolfenstein", "wolfenstein2009", "wolfensteinet",
-        ]
-
-        if game_id in steam_games:
-            url = f"steam://connect/{address}:{query_port}"
-            Logger.debug(f"ConnectButton: Steam game, url={url}")
-            return url
-
-        # Minecraft
-        if game_id in ["minecraft", "minecraftpe", "minecraftbe"]:
-            Logger.debug("ConnectButton: Minecraft game, no direct URL")
-            return None  # Minecraft doesn't have a direct connect URL
-
-        # FiveM
-        if game_id == "fivem":
-            url = f"fivem://connect/{address}:{query_port}"
-            Logger.debug(f"ConnectButton: FiveM game, url={url}")
-            return url
-
-        # BeamMP
-        if game_id == "beammp":
-            url = f"beammp://connect/{address}:{query_port}"
-            Logger.debug(f"ConnectButton: BeamMP game, url={url}")
-            return url
-
-        # Terraria
-        if game_id == "terraria":
-            Logger.debug("ConnectButton: Terraria game, no direct URL")
-            return None  # Terraria doesn't have a direct connect URL
-
-        # Factorio
-        if game_id == "factorio":
-            Logger.debug("ConnectButton: Factorio game, no direct URL")
-            return None  # Factorio doesn't have a direct connect URL
-
-        # Palworld
-        if game_id == "palworld":
-            url = f"steam://connect/{address}:{query_port}"
-            Logger.debug(f"ConnectButton: Palworld game, url={url}")
-            return url
-
-        # Default: try steam://connect for games with port 27015
-        if query_port == "27015":
-            url = f"steam://connect/{address}:{query_port}"
-            Logger.debug(f"ConnectButton: Default 27015 port, url={url}")
-            return url
-
-        Logger.debug("ConnectButton: No matching protocol, returning None")
-        return None
+        await interaction.response.send_message(
+            f"📋 **Copy this command:**\n```\n{connect_command}\n```\n"
+            f"📍 **Server:** `{self.server.address}:{self.server.query_port}`",
+            ephemeral=True
+        )
