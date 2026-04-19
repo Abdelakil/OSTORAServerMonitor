@@ -11,7 +11,6 @@ from discord import ButtonStyle
 from ostora_server_monitor.server import Server
 from ostora_server_monitor.service import gamedig, tz
 from ostora_server_monitor.translator import t
-from ostora_server_monitor.logger import Logger
 
 
 class Style(ABC):
