@@ -1,9 +1,9 @@
 {
-    "name": "Discord Game Server Monitor",
+    "name": "OSTORA Server Monitor",
     "description": "📺 A discord bot that monitors your game server and tracks the live data of your game servers.",
-    "repository": "https://github.com/DiscordGSM/GameServerMonitor",
+    "repository": "https://github.com/Abdelakil/OSTORAServerMonitor",
     "logo": "https://discordgsm.com/android-chrome-192x192.png",
-    "keywords": ["game", "python", "discord", "discord-bot", "slash-commands", "discordgsm", "game-server-monitoring"],
+    "keywords": ["game", "python", "discord", "discord-bot", "slash-commands", "ostora", "game-server-monitoring"],
     "env": {
         "HEROKU_APP_NAME": {
             "description": "Heroku App name. Same as the app name set above.",

@@ -5,11 +5,11 @@ import re
 from dotenv import load_dotenv
 from flask import Flask, jsonify, render_template, request
 
-from discordgsm.environment import env, environment
-from discordgsm.main import tree
-from discordgsm.service import database, gamedig, invite_link, public, whitelist_guilds
-from discordgsm.translator import Locale, translations
-from discordgsm.version import __version__
+from ostora_server_monitor.environment import env, environment
+from ostora_server_monitor.main import tree
+from ostora_server_monitor.service import database, gamedig, invite_link, public, whitelist_guilds
+from ostora_server_monitor.translator import Locale, translations
+from ostora_server_monitor.version import __version__
 
 load_dotenv()
 

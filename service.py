@@ -20,12 +20,12 @@ import win32serviceutil  # noqa: E402
 # Set working directory
 os.chdir(path)
 
-from discordgsm.main import client  # noqa: E402
+from ostora_server_monitor.main import client  # noqa: E402
 
 
 class WindowsService(win32serviceutil.ServiceFramework):
-    _svc_name_ = os.getenv("SERVICE_NAME", "DgsmSvc")
-    _svc_display_name_ = os.getenv("SERVICE_DISPLAY_NAME", "DiscordGSM Service")
+    _svc_name_ = os.getenv("SERVICE_NAME", "OstoraSvc")
+    _svc_display_name_ = os.getenv("SERVICE_DISPLAY_NAME", "OSTORA Server Monitor Service")
     _svc_description_ = os.getenv(
         "SERVICE_DESCRIPTION",
         "A discord bot that monitors your game server and tracks the live data of your game servers.",

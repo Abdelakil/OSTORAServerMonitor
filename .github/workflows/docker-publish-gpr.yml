@@ -15,7 +15,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: discordgsm/discord-game-server-monitor
+  IMAGE_NAME: abdelakil/ostora-server-monitor
 
 jobs:
   build-and-push-image:

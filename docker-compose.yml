@@ -15,12 +15,12 @@ services:
     networks:
       - intranet
 
-  discord-game-server-monitor:
-    container_name: discord-game-server-monitor
+  ostora-server-monitor:
+    container_name: ostora-server-monitor
     build:
       context: .
       dockerfile: Dockerfile
-    image: discord-game-server-monitor:local
+    image: ostora-server-monitor:local
     command: /bin/sh -c "gunicorn --bind 0.0.0.0:8000 --workers=2 --worker-class=gthread app:app --timeout 90 & python -u main.py"
     ports:
       - 8000:8000

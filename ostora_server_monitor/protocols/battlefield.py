@@ -1,0 +1,39 @@
+import asyncio
+import time
+from typing import TYPE_CHECKING
+
+import opengsq
+
+from ostora_server_monitor.protocols.protocol import Protocol
+
+if TYPE_CHECKING:
+    from ostora_server_monitor.gamedig import GamedigResult
+
+
+class Battlefield(Protocol):
+    name = "battlefield"
+
+    async def query(self):
+        host, port = str(self.kv["host"]), int(str(self.kv["port"]))
+        battlefield = opengsq.Battlefield(host, port, self.timeout)
+        start = time.time()
+        info, players = await asyncio.gather(
+            battlefield.get_info(), battlefield.get_players()
+        )
+        ping = int((time.time() - start) * 1000)
+
+        result: GamedigResult = {
+            "name": info.hostname,
+            "map": info.map,
+            "password": info.password,
+            "numplayers": info.num_players,
+            "numbots": 0,
+            "maxplayers": info.max_players,
+            "players": [{"name": player["name"], "raw": player} for player in players],
+            "bots": None,
+            "connect": info.ip_port,
+            "ping": ping,
+            "raw": info.__dict__,
+        }
+
+        return result

@@ -1,9 +1,9 @@
 # flake8: noqa
 def test_import():
-    import discordgsm.styles
-    import discordgsm.database
-    import discordgsm.gamedig
-    import discordgsm.logger
-    import discordgsm.main
-    import discordgsm.server
-    import discordgsm.service
+    import ostora_server_monitor.styles
+    import ostora_server_monitor.database
+    import ostora_server_monitor.gamedig
+    import ostora_server_monitor.logger
+    import ostora_server_monitor.main
+    import ostora_server_monitor.server
+    import ostora_server_monitor.service
