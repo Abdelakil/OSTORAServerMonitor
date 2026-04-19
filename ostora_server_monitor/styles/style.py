@@ -295,7 +295,7 @@ class ConnectButton(Button):
 
         # Steam games (Source, GoldSrc, etc.)
         steam_games = [
-            "cs", "csgo", "css", "dod", "dods", "hl2dm", "tf2", "gmod", "insurgency",
+            "cs", "cs2", "csgo", "css", "dod", "dods", "hl2dm", "tf2", "gmod", "insurgency",
             "nmrih", "zps", "synergy", "aos", "pvkii", "mumble", "ark", "arkse",
             "arma3", "battalion1944", "braid", "cod", "cod2", "cod4", "codwaw",
             "codbo", "codmw2", "codmw3", "coj", "crysis", "crysis2", "crysiswars",
