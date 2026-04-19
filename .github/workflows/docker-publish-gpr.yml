@@ -2,6 +2,7 @@
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
+# Automatically builds and pushes Docker image to GHCR on push to main branch
 
 # GitHub recommends pinning actions to a commit SHA.
 # To get a newer version, you will need to update the SHA.
