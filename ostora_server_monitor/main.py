@@ -1182,8 +1182,11 @@ async def resend_channel_messages(
 
     async for chunks in embeds_chunks(servers):
         try:
+            # Get view from the first server's style if there's only one server
+            view = Styles.get(chunks[0]).view() if len(chunks) == 1 else None
             message = await channel.send(
-                embeds=[Styles.get(server).embed() for server in chunks]
+                embeds=[Styles.get(server).embed() for server in chunks],
+                view=view
             )
         except discord.Forbidden as e:
             # You do not have the proper permissions to send the message.
@@ -1537,8 +1540,11 @@ async def edit_message(servers: list[Server]):
     if message := await fetch_message(servers[0]):
         try:
             embeds = [Styles.get(server).embed() for server in servers]
+            # Get view from the first server's style
+            view = Styles.get(servers[0]).view() if len(servers) == 1 else None
+            
             message = await asyncio.wait_for(
-                message.edit(embeds=embeds),
+                message.edit(embeds=embeds, view=view),
                 timeout=float(os.getenv("TASK_EDIT_MESSAGE_TIMEOUT", "3")),
             )
             Logger.debug(f"Edit messages: {message.id} success")

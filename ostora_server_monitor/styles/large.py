@@ -1,9 +1,11 @@
-from typing import List
+from typing import List, Optional
 
 from discord import Embed
+from discord.ui import View
 
 from ostora_server_monitor.gamedig import GamedigPlayer
 from ostora_server_monitor.styles.medium import Medium
+from ostora_server_monitor.styles.style import ConnectButton
 from ostora_server_monitor.translator import t
 
 
@@ -31,6 +33,13 @@ class Large(Medium):
         self.add_player_list_fields(embed, field_name, self.server.result["players"])
 
         return embed
+
+    def view(self) -> Optional[View]:
+        """Return a View with connect button"""
+        view = View()
+        connect_button = ConnectButton(self.server, self.locale)
+        view.add_item(connect_button)
+        return view
 
     def add_player_list_fields(
         self, embed: Embed, field_name: str, players: List[GamedigPlayer]

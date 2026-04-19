@@ -5,7 +5,8 @@ from typing import Dict, Optional, Union
 
 import aiohttp
 from discord import Color, Embed, Emoji, Locale, PartialEmoji, TextStyle
-from discord.ui import TextInput
+from discord.ui import TextInput, View, Button
+from discord import ButtonStyle
 
 from ostora_server_monitor.server import Server
 from ostora_server_monitor.service import gamedig, tz
@@ -121,6 +122,10 @@ class Style(ABC):
     @abstractmethod
     def embed(self) -> Embed:
         raise NotImplementedError()
+
+    def view(self) -> Optional[View]:
+        """Return a View object with buttons (optional)"""
+        return None
 
     def embed_data(self):
         title = (self.server.result["password"] and "🔒 " or "") + self.server.result[
@@ -262,3 +267,76 @@ class Style(ABC):
             players_string = f"{players_string}/{maxplayers} ({percentage}%)"
 
         return players_string
+
+
+class ConnectButton(Button):
+    """Connect button for game servers"""
+
+    def __init__(self, server: Server, locale: str):
+        self.server = server
+        self.locale = locale
+        connect_url = self._get_connect_url()
+
+        label = t("button.connect.label", locale) if connect_url else "N/A"
+        style = ButtonStyle.primary if connect_url else ButtonStyle.secondary
+        disabled = not connect_url
+
+        super().__init__(style=style, label=label, disabled=disabled, url=connect_url)
+
+    def _get_connect_url(self) -> Optional[str]:
+        """Generate game-specific connection URL"""
+        game_id = self.server.game_id
+        address = self.server.address
+        query_port = self.server.query_port
+
+        # Discord servers use instant invite
+        if game_id == "discord":
+            return self.server.result.get("connect")
+
+        # Steam games (Source, GoldSrc, etc.)
+        steam_games = [
+            "cs", "csgo", "css", "dod", "dods", "hl2dm", "tf2", "gmod", "insurgency",
+            "nmrih", "zps", "synergy", "aos", "pvkii", "mumble", "ark", "arkse",
+            "arma3", "battalion1944", "braid", "cod", "cod2", "cod4", "codwaw",
+            "codbo", "codmw2", "codmw3", "coj", "crysis", "crysis2", "crysiswars",
+            "dmc", "dod", "dods", "doi", "fear", "gta5", "gta", "hldm", "hl2dm",
+            "insurgency", "insurgencysandstorm", "jcmp", "jcmp2", "jcmp3", "kf", "killingfloor",
+            "killingfloor2", "left4dead", "left4dead2", "mohaa", "mohab", "mohpa",
+            "mohwf", "mta", "mtasa", "nmrih", "opfdr", "pvkii", "ragemp", "samp",
+            "sf", "sfc", "sfc2", "soldat", "source", "swat4", "synergy", "tes",
+            "tf2", "ts", "ut", "ut2003", "ut2004", "ut3", "ut3_lan", "vampire",
+            "ven", "warsow", "wolfenstein", "wolfenstein2009", "wolfensteinet",
+        ]
+
+        if game_id in steam_games:
+            return f"steam://connect/{address}:{query_port}"
+
+        # Minecraft
+        if game_id in ["minecraft", "minecraftpe", "minecraftbe"]:
+            return None  # Minecraft doesn't have a direct connect URL
+
+        # FiveM
+        if game_id == "fivem":
+            return f"fivem://connect/{address}:{query_port}"
+
+        # BeamMP
+        if game_id == "beammp":
+            return f"beammp://connect/{address}:{query_port}"
+
+        # Terraria
+        if game_id == "terraria":
+            return None  # Terraria doesn't have a direct connect URL
+
+        # Factorio
+        if game_id == "factorio":
+            return None  # Factorio doesn't have a direct connect URL
+
+        # Palworld
+        if game_id == "palworld":
+            return f"steam://connect/{address}:{query_port}"
+
+        # Default: try steam://connect for games with port 27015
+        if query_port == "27015":
+            return f"steam://connect/{address}:{query_port}"
+
+        return None
