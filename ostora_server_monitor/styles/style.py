@@ -209,7 +209,7 @@ class Style(ABC):
         )
         icon_url = "https://avatars.githubusercontent.com/u/61296017"
         embed.set_footer(
-            text=f"OSTORA {__version__} | {advertisement} | {last_update}",
+            text=f"{advertisement} | {last_update}",
             icon_url=icon_url,
         )
 
