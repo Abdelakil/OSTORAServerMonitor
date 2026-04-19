@@ -12,6 +12,7 @@ from ostora_server_monitor.server import Server
 from ostora_server_monitor.service import gamedig, tz
 from ostora_server_monitor.translator import t
 from ostora_server_monitor.version import __version__
+from ostora_server_monitor.logger import Logger
 
 
 class Style(ABC):
@@ -289,9 +290,13 @@ class ConnectButton(Button):
         address = self.server.address
         query_port = self.server.query_port
 
+        Logger.debug(f"ConnectButton: game_id={game_id}, address={address}, query_port={query_port}")
+
         # Discord servers use instant invite
         if game_id == "discord":
-            return self.server.result.get("connect")
+            url = self.server.result.get("connect")
+            Logger.debug(f"ConnectButton: Discord server, url={url}")
+            return url
 
         # Steam games (Source, GoldSrc, etc.)
         steam_games = [
@@ -309,34 +314,48 @@ class ConnectButton(Button):
         ]
 
         if game_id in steam_games:
-            return f"steam://connect/{address}:{query_port}"
+            url = f"steam://connect/{address}:{query_port}"
+            Logger.debug(f"ConnectButton: Steam game, url={url}")
+            return url
 
         # Minecraft
         if game_id in ["minecraft", "minecraftpe", "minecraftbe"]:
+            Logger.debug(f"ConnectButton: Minecraft game, no direct URL")
             return None  # Minecraft doesn't have a direct connect URL
 
         # FiveM
         if game_id == "fivem":
-            return f"fivem://connect/{address}:{query_port}"
+            url = f"fivem://connect/{address}:{query_port}"
+            Logger.debug(f"ConnectButton: FiveM game, url={url}")
+            return url
 
         # BeamMP
         if game_id == "beammp":
-            return f"beammp://connect/{address}:{query_port}"
+            url = f"beammp://connect/{address}:{query_port}"
+            Logger.debug(f"ConnectButton: BeamMP game, url={url}")
+            return url
 
         # Terraria
         if game_id == "terraria":
+            Logger.debug(f"ConnectButton: Terraria game, no direct URL")
             return None  # Terraria doesn't have a direct connect URL
 
         # Factorio
         if game_id == "factorio":
+            Logger.debug(f"ConnectButton: Factorio game, no direct URL")
             return None  # Factorio doesn't have a direct connect URL
 
         # Palworld
         if game_id == "palworld":
-            return f"steam://connect/{address}:{query_port}"
+            url = f"steam://connect/{address}:{query_port}"
+            Logger.debug(f"ConnectButton: Palworld game, url={url}")
+            return url
 
         # Default: try steam://connect for games with port 27015
         if query_port == "27015":
-            return f"steam://connect/{address}:{query_port}"
+            url = f"steam://connect/{address}:{query_port}"
+            Logger.debug(f"ConnectButton: Default 27015 port, url={url}")
+            return url
 
+        Logger.debug(f"ConnectButton: No matching protocol, returning None")
         return None
