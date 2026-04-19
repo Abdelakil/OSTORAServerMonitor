@@ -275,7 +275,7 @@ class CopyButton(Button):
         self.server = server
         self.locale = locale
 
-        label = t("button.copy.label", locale)
+        label = t("button.connect.label", locale)
         style = ButtonStyle.primary
 
         super().__init__(style=style, label=label)
