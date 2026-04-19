@@ -261,7 +261,7 @@ def alert_embed(server: Server, alert: Alert):
         query_time=query_time
     )
     icon_url = "https://avatars.githubusercontent.com/u/61296017"
-    embed.set_footer(text=f"DiscordGSM {__version__} | {query_time}", icon_url=icon_url)
+    embed.set_footer(text=f"OSTORA Server Monitor {__version__} | {query_time}", icon_url=icon_url)
 
     return embed
 
@@ -271,7 +271,7 @@ async def send_alert(server: Server, alert: Alert):
     if webhook_url := server.style_data.get("_alert_webhook_url"):
         content = server.style_data.get("_alert_content", "").strip()
         content = None if not content else content
-        username = "Game Server Monitor Alert"
+        username = "OSTORA Server Monitor Alert"
         avatar_url = "https://avatars.githubusercontent.com/u/61296017"
 
         async with aiohttp.ClientSession() as session:

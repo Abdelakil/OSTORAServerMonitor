@@ -187,7 +187,7 @@ class Style(ABC):
         )
 
     def set_footer(self, embed: Embed):
-        advertisement = "📺 Game Server Monitor"
+        advertisement = "📺 OSTORA Server Monitor"
 
         # Easter Egg
         today = str(date.today())  # 2020-12-23
