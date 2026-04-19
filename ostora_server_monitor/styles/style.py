@@ -11,7 +11,6 @@ from discord import ButtonStyle
 from ostora_server_monitor.server import Server
 from ostora_server_monitor.service import gamedig, tz
 from ostora_server_monitor.translator import t
-from ostora_server_monitor.version import __version__
 from ostora_server_monitor.logger import Logger
 
 
@@ -287,8 +286,7 @@ class ConnectButton(Button):
     async def callback(self, interaction):
         """Send connection details when button is clicked"""
         connect_url = self._get_connect_url()
-        game_port = gamedig.game_port(self.server.result)
-        
+
         # Format connect command for console (used by CS2, etc.)
         connect_command = f"connect {self.server.address}:{self.server.query_port}"
         
@@ -343,7 +341,7 @@ class ConnectButton(Button):
 
         # Minecraft
         if game_id in ["minecraft", "minecraftpe", "minecraftbe"]:
-            Logger.debug(f"ConnectButton: Minecraft game, no direct URL")
+            Logger.debug("ConnectButton: Minecraft game, no direct URL")
             return None  # Minecraft doesn't have a direct connect URL
 
         # FiveM
@@ -360,12 +358,12 @@ class ConnectButton(Button):
 
         # Terraria
         if game_id == "terraria":
-            Logger.debug(f"ConnectButton: Terraria game, no direct URL")
+            Logger.debug("ConnectButton: Terraria game, no direct URL")
             return None  # Terraria doesn't have a direct connect URL
 
         # Factorio
         if game_id == "factorio":
-            Logger.debug(f"ConnectButton: Factorio game, no direct URL")
+            Logger.debug("ConnectButton: Factorio game, no direct URL")
             return None  # Factorio doesn't have a direct connect URL
 
         # Palworld
@@ -380,5 +378,5 @@ class ConnectButton(Button):
             Logger.debug(f"ConnectButton: Default 27015 port, url={url}")
             return url
 
-        Logger.debug(f"ConnectButton: No matching protocol, returning None")
+        Logger.debug("ConnectButton: No matching protocol, returning None")
         return None
