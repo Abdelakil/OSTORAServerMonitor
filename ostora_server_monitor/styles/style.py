@@ -278,11 +278,29 @@ class ConnectButton(Button):
         self.locale = locale
         connect_url = self._get_connect_url()
 
-        label = t("button.connect.label", locale) if connect_url else "N/A"
+        label = t("button.connect.label", locale)
         style = ButtonStyle.primary if connect_url else ButtonStyle.secondary
         disabled = not connect_url
 
-        super().__init__(style=style, label=label, disabled=disabled, url=connect_url)
+        super().__init__(style=style, label=label, disabled=disabled)
+
+    async def callback(self, interaction):
+        """Send connection details when button is clicked"""
+        connect_url = self._get_connect_url()
+        game_port = gamedig.game_port(self.server.result)
+        
+        if connect_url:
+            await interaction.response.send_message(
+                f"🔗 **Connection URL:** `{connect_url}`\n"
+                f"📍 **Server:** `{self.server.address}:{self.server.query_port}`",
+                ephemeral=True
+            )
+        else:
+            await interaction.response.send_message(
+                f"📍 **Server:** `{self.server.address}:{self.server.query_port}`\n"
+                f"⚠️ This game doesn't have a direct connect URL. Copy the server address and connect manually.",
+                ephemeral=True
+            )
 
     def _get_connect_url(self) -> Optional[str]:
         """Generate game-specific connection URL"""
